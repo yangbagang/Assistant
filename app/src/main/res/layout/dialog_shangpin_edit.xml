@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/shape_dialog_edit"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/dialog_shangpin_edit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/linea_dialog_selector_up"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:src="@mipmap/icon_goodsname"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="编辑"
+            android:textSize="17sp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:src="@mipmap/main_bottomline"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/dialog_shangpin_delete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@drawable/linea_dialog_selector_below"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_marginLeft="@dimen/dp_30"
+            android:src="@mipmap/icon_add_delete"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:text="删除"
+            android:textSize="17sp"/>
+    </LinearLayout>
+</LinearLayout>

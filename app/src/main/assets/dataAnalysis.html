@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>数据中心-分析</title>
+    <link rel="stylesheet" href="./css/plugins/mui.min.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+<body>
+<!--侧滑容器-->
+<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+    <!--侧滑内容-->
+    <aside class="mui-off-canvas-right">
+        <header class="mui-bar mui-bar-nav">
+            <a id="offCanvasHide" href="#" class="mui-pull-left mui-btn-link">取消</a>
+            <h1 class="mui-title">选择主题店</h1>
+            <a class="mui-pull-right mui-btn-link" id="suerP">确定</a>
+        </header>
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <div class="search_wrap">
+                    <div class="mui-search">
+                        <button class="mui-icon mui-icon-search mui-btn-link" onclick="initThemeInfo()"></button>
+                        <input type="search" class="mui-input-clear" id="keyWord" placeholder="请输入关键字" />
+                    </div>
+                </div>
+                <h3 class="search_title" id="nearTheme_t">当前定位主题店</h3>
+                <ul   id="nearTheme">
+                    <li class="search_list">
+                        <label>
+                            <h4>主题店名称</h4>
+                            <p id="themeAddress">主题店地址</p>
+                            <div class="position">
+                                <p class="mui-checkbox mui-left">
+                                    <input name="position" class="check1"  checked type="checkbox" checked />选择该主题店
+                                </p>
+                                <p class="distance"><i class="mui-icon mui-icon-location"></i><span id="nearJl">1米</span></p>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+                <h3 class="search_title">附近共找到<span id="totalCount1"></span>家主题店</h3>
+                <ul id="showThemeInfo">
+                </ul>
+            </div>
+        </div>
+    </aside>
+    <!--/侧滑内容-->
+
+    <!-- 主题店模板 -->
+    <div id="themeTemp" style="display:none">
+        <li class="search_list">
+            <label>
+                <h4></h4>
+                <p id="addr"></p>
+                <div class="position">
+                    <p class="mui-checkbox mui-left">
+                        <input name="position" class="check1" type="checkbox" />选择该主题店
+                    </p>
+                    <p class="distance"><i class="mui-icon mui-icon-location"></i><span id="jl"></span></p>
+                </div>
+            </label>
+        </li>
+    </div>
+    <!--页面内容-->
+    <div class="mui-inner-wrap">
+        <header class="mui-bar mui-bar-nav">
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">数据中心</h1>
+            <a id="offCanvasBtn" class="mui-pull-right mui-btn-link" href="#">全部主题店</a>
+        </header>
+        <div class="mui-content data_menu">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right" href="javascript:void(0);" id="report">
+                        <span class="data_icon icon_manage"></span>
+                        <h4>经营报告</h4>
+                        <p id="reportContent">
+                            昨日您的主题店销售金额为0元，
+                            较前日增加
+                            0%。
+                            销售频次0次，
+                            较前日增加
+                            0%。
+                        </p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="mui-table-view mt10">
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right" href="javascript:void(0);" id="rech">
+                        <span class="data_icon icon_charge"></span>
+                        <h4>交易分析</h4>
+                        <p><i id="timeContent1">2016-01-01</i>更新</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="mui-table-view mt10">
+                <li class="mui-table-view-cell">
+                    <a class="mui-navigate-right" href="javascript:void(0);" id="pro">
+                        <span class="data_icon icon_pro"></span>
+                        <h4>商品分析</h4>
+                        <p><i id="timeContent2">2016-01-01</i>更新</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <nav class="mui-bar mui-bar-tab">
+            <a class="mui-tab-item" href="javascript:void(0);" id="over">实况</a>
+            <a class="mui-tab-item mui-active" href="javascript:void(0);" id="analysis">分析</a>
+        </nav>
+    </div>
+    <!--/页面内容-->
+</div>
+<!--/侧滑容器-->
+</body>
+<script type="text/javascript" src="./js/plugins/zepto.js"></script>
+<script type="text/javascript" src="./js/plugins/mui.min.js"></script>
+<script>
+    var basePath = window.appObject.getServerAddress();
+	var token = window.appObject.getToken();
+	var longitude = window.appObject.getLongitude();
+	var latitude = window.appObject.getLatitude();
+	var ids = "";
+	// 侧滑内容显示隐藏
+	var offCanvasWrapper = mui('#offCanvasWrapper');
+	var classList = offCanvasWrapper[0].classList;
+	classList.add('mui-slide-in');
+	document.getElementById('offCanvasBtn').addEventListener('tap', function() {
+		offCanvasWrapper.offCanvas('show');
+	});
+	document.getElementById('offCanvasHide').addEventListener('tap', function() {
+		offCanvasWrapper.offCanvas('close');
+	});
+
+	/**
+	*初始化
+	*如果之前选了售卖机 就要选上
+	**/
+	function selectTheme(){
+	   console.info(ids != null && ids != "");
+	   if(ids != null && ids != ""){
+	     var string = ids.split(",");
+	     $("input[name='position']").each(function(){
+	        for(var i=0;i<string.length;i++){
+	           if(string[i] == $(this).val()){
+	              this.checked = true;
+	           }
+	        }
+	     });
+	   }
+	}
+
+	//主题店ids
+	function getThemeIds(){
+		var tids="-1";
+		mui(".check1").each(function(){
+            if(this.checked){
+            	if($(this).val() != 'on'){
+            		tids += "," + $(this).val();
+            	}
+
+            }
+         });
+		return tids;
+	}
+
+	//选择主题店确认按钮点击事件
+	function surePPbar(){
+		//window.location.href="statisticsApp/toDataAnalysis?token=${token}&themeIds=" + getThemeIds() ;
+	}
+	//选择主题店确认按钮点击事件
+	$("#suerP").on("tap",function(){
+		offCanvasWrapper.offCanvas('close');
+		surePPbar();
+	});
+
+	//实况
+	$("#over").on('tap',function(){
+		var themeIds = getThemeIds();
+		window.location.href="dataOverview.html?" + themeIds;
+	});
+	//分析
+	$("#analysis").on('tap',function(){
+		var themeIds = getThemeIds();
+		window.location.href="dataAnalysis.html?" + themeIds;
+	});
+	//经营报告
+	$("#report").on('tap',function(){
+		//var themeIds = getThemeIds();
+		//window.location.href="statisticsApp/toManageReport?token=" + token + "&themeIds=" + themeIds;
+	});
+	//交易分析
+	$("#rech").on('tap',function(){
+		//var themeIds = getThemeIds();
+		//window.location.href="rechargeAnalysis/findData?token=" + token + "&themeIds=" + themeIds;
+	});
+	//商品分析
+	$("#pro").on('tap',function(){
+		//var themeIds = getThemeIds();
+		//window.location.href="statisticsApp/goodByType?token=" + token + "&themeIds=" + themeIds+ "&goodType=0";
+	});
+
+	//加载主题店
+	function initThemeInfo(){
+		selectTheme();//初始化已选themeIds
+		var keyWord = $("#keyWord").val();
+		$("#showThemeInfo").html("");
+		$.ajax({
+			url: basePath + "/themeStoreBaseInfo/listThemeStoreByToken",
+			type:"post",
+			data:{token: token, name: keyWord,latitude: latitude,longitude: longitude},
+			dataType:"json",
+			success:function(data){
+				if(data.success){
+					var nearList = data.nearestList;
+					var dataList = data.dataList;
+					if(nearList != null){
+						$("#nearTheme").find("h4").html(nearList.name);
+						$("#nearTheme").find("themeAddress").html(nearList.address);
+						$("#nearTheme").find("nearJl").html(nearList.distance);
+						$("#themeTemp").find("input").html(nearList.id);
+					}else{
+						$("#nearTheme").hide();
+						$("#nearTheme_t").hide();
+					}
+					if (dataList != null) {
+                        for(var i=0;i<dataList.length;i++){
+                            var cellValue = dataList[i];
+                            $("#themeTemp").find("h4").html(cellValue.name);
+                            $("#themeTemp").find("#addr").html(cellValue.address);
+                            $("#themeTemp").find("input").val(cellValue.id);
+                            if(nearList != null){
+                                $("#themeTemp").find("#jl").html(cellValue.distance);
+                            }
+                            $("#showThemeInfo").append($("#themeTemp").html());
+                        }
+					}
+					$("#totalCount1").html(data.totalCount);
+				}else{
+					alert(data.message);
+				}
+			}
+		});
+	}
+
+	function initData() {
+	    var themeIds = getThemeIds();
+	    $.ajax({
+			url: basePath + "/dataAnalysis/queryCompareData",
+			type:"post",
+			data:{token: token, themeIds: themeIds},
+			dataType:"json",
+			success:function(data){
+				if(data.success){
+                    var ztMoney = data.ztMoney;
+                    var qtMoney = data.qtMoney;
+                    var ztCount = data.ztCount;
+                    var qtCount = data.qtCount;
+                    var moneyCompare = data.moneyCompare;
+                    var countCompare = data.countCompare;
+                    var zt = data.zt;
+                    var qt = data.qt;
+                    var content = "昨日您的主题店销售金额为"+ztMoney+"元，" +
+                            "较前日" + qtMoney + "元" +
+                            "增加" + moneyCompare + "%。" +
+                            "销售频次" + ztCount + "次，" +
+                            "较前日" + qtCount + "次" +
+                            "增加" + countCompare + "%。";
+                    $("#reportContent").html("");
+					$("#reportContent").html(content);
+					$("#timeContent1").html("");
+					$("#timeContent1").html(zt);
+					$("#timeContent2").html("");
+					$("#timeContent2").html(zt);
+				}else{
+					alert(data.message);
+				}
+			}
+		});
+	}
+
+	initData();
+	initThemeInfo();
+</script>
+</html>

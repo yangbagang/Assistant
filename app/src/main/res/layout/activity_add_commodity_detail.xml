@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <!-- 标题栏========================-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:background="@color/top_green">
+
+        <ImageView
+            android:id="@+id/addcommonditydetail_iv_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/dp_14"
+            android:src="@drawable/back_selector"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="新增商品"
+            android:textColor="#fffceb"
+            android:textSize="21sp"/>
+
+        <RelativeLayout
+            android:id="@+id/addcommonditydetail_rl_finish"
+            android:layout_width="@dimen/dp_110"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_toLeftOf="@+id/addcommonditydetail_finish"
+                android:src="@mipmap/icon_finish"/>
+
+            <TextView
+                android:id="@+id/addcommonditydetail_finish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="完成"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_category"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:text="商品信息:"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:text="商品规格请描述清晰, 示例:56g/瓶、330ml、500g、特大号、大号、中号、小号"
+                    android:textColor="@color/gray"/>
+            </LinearLayout>
+            <!-- 分割线===============================-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_category"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_weight="1"
+                    android:text="分类"
+                    android:textSize="18sp"/>
+
+                <LinearLayout
+                    android:id="@+id/addcommonditydetail_ll_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/addcommonditydetail_tv_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/gray"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="match_parent"
+
+                        android:src="@mipmap/icon_goright"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 分割线===============================-->
+            <ImageView
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_code"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_weight="1"
+                    android:text="条码"
+                    android:textSize="18sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/gray"/>
+
+                <ImageView
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/dp_15"
+                    android:src="@mipmap/icon_scanning"/>
+
+            </LinearLayout>
+
+            <!-- 分割线===============================-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_goodsname"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:text="名称"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:id="@+id/addcommonditydetail_et_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_50"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="名称"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <!-- 分割线===============================-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_specifications"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:text="规格"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:id="@+id/addcommonditydetail_et_standard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_50"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="单位,规格,型号,尺寸,重量,容量"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <!-- 分割线===============================-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_brand"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:layout_weight="1"
+                    android:text="品牌"
+                    android:textSize="18sp"/>
+
+                <LinearLayout
+                    android:id="@+id/addcommonditydetail_ll_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/addcommonditydetail_tv_brand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/gray"/>
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/icon_goright"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 分割线===============================-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:src="@mipmap/icon_price"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:text="售价"
+                    android:textSize="18sp"/>
+
+                <EditText
+                    android:id="@+id/addcommonditydetail_et_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:gravity="center_vertical|right"
+                    android:hint="售价"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/gray"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:text="元"
+                    android:textColor="@color/gray"/>
+
+            </LinearLayout>
+
+            <!-- 分割线===============================-->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/main_bottomline"/>
+
+            <LinearLayout
+                android:id="@+id/addcommonditydetail_ll_uploadpic"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:gravity="center_vertical">
+
+                <!--<ImageView-->
+                    <!--android:layout_width="@dimen/dp_20"-->
+                    <!--android:layout_height="@dimen/dp_20"-->
+                    <!--android:layout_marginLeft="@dimen/dp_20"-->
+                    <!--android:src="@mipmap/icon_price"/>-->
+                <TextView
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:background="@color/yellow"
+                    android:layout_width="5dp"
+                    android:layout_height="15dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_15"
+                    android:text="上传图片"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/addcommonditydetail_iv_pic"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:src="@mipmap/icon_photo"/>
+
+            <TextView
+                android:id="@+id/addcommonditydetail_tv_add_goods"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:layout_marginRight="@dimen/dp_20"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/button_selector_login"
+                android:gravity="center"
+                android:text="继续添加"
+                android:textColor="@color/white"
+                android:textSize="22sp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

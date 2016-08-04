@@ -1,0 +1,49 @@
+apply plugin: 'com.android.application'
+
+android {
+    signingConfigs {
+        ybg {
+            keyAlias 'ybg'
+            keyPassword '0e6zyQ=='
+            storeFile file('/Users/yangbagang/dev/android/keystore/ybg.keystore')
+            storePassword '5raJ5a+G'
+        }
+    }
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.ybg.rp.assistant"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:support-v4:23.4.0'
+    compile 'com.android.support:percent:23.4.0'
+    compile 'cn.finalteam:galleryfinal:1.4.8.7'
+    //圆形头像
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'org.xutils:xutils:3.2.0'
+    compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.alibaba:fastjson:1.2.8'
+    compile 'cn.qqtheme.framework:AndroidPicker:latest.integration'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile files('libs/locSDK_6.23.jar')
+    compile files('libs/zxing.jar')
+    compile files('libs/picasso-2.5.2.jar')
+}

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>售卖机</title>
+    <link rel="stylesheet" href="./css/plugins/mui.min.css" />
+    <link rel="stylesheet" href="./css/plugins/swiper.min.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+<body onload="init(false,0)">
+<input type="hidden" id="layerIds" value="">
+<input type="hidden" id="layerNum" value="">
+<input type="hidden" id="str" value="">
+<div class="swiper-container" id="p_swipe">
+    <ul class="page_change swiper-wrapper" id="slider">
+        <li class="page swiper-slide main g_group">
+            <header class="mui-bar mui-bar-nav">
+                <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left">返回</a>
+                <a class="mui-icon mui-pull-left mui-icon-closeempty cancel_opt none">取消</a>
+                <a class="mui-pull-left mui-btn-link close_btn" href="goodsManage.html">关闭</a>
+                <h1 class="mui-title">售卖机主机</h1>
+                <a class="mui-pull-right show_opt"><span class="g_icon g_more"></span></a>
+            </header>
+            <div class="mui-content" value="" id="zlayer">
+                <div class="p_wrap group2" id="showData">
+                    <ul class="p_num">
+                        <li class="p_label p_all"><span>全选</span><i></i></li>
+                        <li class="p_col"><span>0</span><i></i></li>
+                        <li class="p_col"><span>1</span><i></i></li>
+                        <li class="p_col"><span>2</span><i></i></li>
+                        <li class="p_col"><span>3</span><i></i></li>
+                        <li class="p_col"><span>4</span><i></i></li>
+                        <li class="p_col"><span>5</span><i></i></li>
+                        <li class="p_col"><span>6</span><i></i></li>
+                        <li class="p_col"><span>7</span><i></i></li>
+                        <li class="p_col"><span>8</span><i></i></li>
+                        <li class="p_col"><span>9</span><i></i></li>
+                    </ul>
+                </div>
+                <!-- 已选底部 -->
+                <div class="choosed_wrap none">
+                    <span class="gray">已选轨道: </span>
+                    <span class="choosed_rail">20</span>
+                    <span class="choosed_rail">10</span>
+                </div>
+                <!-- 调换位置底部 -->
+                <div class="opt_wrap none">
+                    <div class="save_wrap">
+                        <ul class="save_p none"></ul>
+                    </div>
+                </div>
+                <!-- 右侧操作按钮 -->
+                <ul class="setting none">
+                    <span class="triangle"></span>
+                    <li><a class="chooseProduct"><span class="g_icon g_pro"></span><span>选择商品</span></a></li>
+                    <li class="setting_num"><span class="g_icon g_num"></span><span>设定数量</span></li>
+                    <li class="btn_order"><span class="g_icon g_change"></span><span>调换位置</span></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <div class="page_dot"></div>
+
+    <!-- 设定数量弹窗 -->
+    <div class="mui-backdrop none num_dialog">
+        <div class="dialog">
+            <h4 class="dialog_title">设定数量</h4>
+            <ul class="set_num" id="setNumSelect">
+                <li class="mui-btn">0</li>
+                <li class="mui-btn">1</li>
+                <li class="mui-btn">2</li>
+                <li class="mui-btn">3</li>
+                <li class="mui-btn">4</li>
+                <li class="mui-btn">5</li>
+                <li class="mui-btn">6</li>
+                <li class="mui-btn">7</li>
+                <li class="mui-btn">8</li>
+                <li class="mui-btn">9</li>
+                <li class="mui-btn">10</li>
+                <li class="mui-btn">11</li>
+                <li class="mui-btn">12</li>
+                <li class="mui-btn">13</li>
+            </ul>
+            <p class="btn_wrap">
+                <a href="javascript:;" class="cancel">取消</a>
+                <a href="javascript:;" class="confirm confirm_num">确定</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- 主机标题模板 -->
+<div style="display:none" id="zhujiHeader10">
+    <ul class="p_num">
+        <li class="p_label p_all"><span>全选</span><i></i></li>
+        <li class="p_col"><span>0</span><i></i></li>
+        <li class="p_col"><span>1</span><i></i></li>
+        <li class="p_col"><span>2</span><i></i></li>
+        <li class="p_col"><span>3</span><i></i></li>
+        <li class="p_col"><span>4</span><i></i></li>
+        <li class="p_col"><span>5</span><i></i></li>
+        <li class="p_col"><span>6</span><i></i></li>
+        <li class="p_col"><span>7</span><i></i></li>
+        <li class="p_col"><span>8</span><i></i></li>
+        <li class="p_col"><span>9</span><i></i></li>
+    </ul>
+</div>
+<div style="display:none" id="zhujiHeader8">
+    <ul class="p_num p_08">
+        <li class="p_label p_all"><span>全选</span><i></i></li>
+        <li class="p_col"><span>0</span><i></i></li>
+        <li class="p_col"><span>1</span><i></i></li>
+        <li class="p_col"><span>2</span><i></i></li>
+        <li class="p_col"><span>3</span><i></i></li>
+        <li class="p_col"><span>4</span><i></i></li>
+        <li class="p_col"><span>5</span><i></i></li>
+        <li class="p_col"><span>6</span><i></i></li>
+        <li class="p_col"><span>7</span><i></i></li>
+    </ul>
+</div>
+<div style="display:none" id="tihuan">
+    <li class="p_info" id="cunshu">
+        <h3>10</h3>
+        <div class="p_content">
+            <p class="gray" id="goodsName">饼干蛋糕</p>
+            <p id="kucun">4/5</p>
+            <p class="red" id="price">￥94.0</p>
+        </div>
+    </li>
+</div>
+<div style="display:none" id="tihuan0">
+    <li class="p_label p_row">
+        <h3 id="showTitle">1</h3>
+        <div class="label_content">
+            <p class="gray">名称</p>
+            <p id="kucunTitle">库存/最大</p>
+            <p class="red">单位(元)</p>
+        </div>
+        <i></i>
+    </li>
+</div>
+<!-- 格子柜模板 -->
+<div style="display:none">
+    <div id="g08li">
+        <li class="page swiper-slide g08" id="g08">
+            <header class="mui-bar mui-bar-nav">
+                <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left">返回</a>
+                <a class="mui-icon mui-pull-left mui-icon-closeempty cancel_opt none">取消</a>
+                <a class="mui-pull-left mui-btn-link close_btn" href="<%=basePath %>app/common/manage/back">关闭</a>
+                <h1 class="mui-title">格子柜A-8</h1>
+                <a class="mui-pull-right show_opt"><span class="g_icon g_more"></span></a>
+            </header>
+            <div class="mui-content">
+                <input type="hidden"  class="glayer">
+                <div class="p_wrap" id="showG">
+
+                </div>
+                <!-- 已选底部 -->
+                <div class="choosed_wrap none">
+                    <span class="gray">已选格子柜: </span>
+                    <span class="choosed_rail">A01</span>
+                    <span class="choosed_rail">A01</span>
+                </div>
+                <!-- 调换位置底部 -->
+                <div class="opt_wrap none">
+                    <div class="save_wrap">
+                        <ul class="save_p none"></ul>
+                    </div>
+                </div>
+                <!-- 右侧操作按钮 -->
+                <ul class="setting none">
+                    <span class="triangle"></span>
+                    <li><a class="chooseProduct gezi"><span class="g_icon g_pro"></span><span>设定商品</span></a></li>
+                    <li class="p_info setGnum" data="1"><span class="g_icon g_whole"></span><span>设定加满</span></li>
+                    <li class="p_info setGnum" data="0"><span class="g_icon g_none"></span><span>设定清空</span></li>
+                    <li class="btn_order"><span class="g_icon g_change"></span><span>调换位置</span></li>
+                    <li class="p_info open_door" onclick="openDoor()"><span class="g_icon g_open"></span><span>开柜门</span></li>
+                    <li class="p_info open_empty"><span class="g_icon g_openNone"></span><span>开空柜门</span></li>
+                </ul>
+            </div>
+        </li>
+    </div>
+    <div id="g05li">
+        <li class="page swiper-slide g05" id="g05">
+            <header class="mui-bar mui-bar-nav">
+                <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left">返回</a>
+                <a class="mui-icon mui-pull-left mui-icon-closeempty cancel_opt none">取消</a>
+                <a class="mui-pull-left mui-btn-link close_btn" href="<%=basePath %>app/common/manage/back">关闭</a>
+                <h1 class="mui-title">格子柜A-5</h1>
+                <a class="mui-pull-right show_opt"><span class="g_icon g_more"></span></a>
+            </header>
+            <div class="mui-content">
+                <input type="hidden"  class="glayer">
+                <div class="p_wrap" id="showG">
+                </div>
+                <!-- 已选底部 -->
+                <div class="choosed_wrap none">
+                    <span class="gray">已选格子柜: </span>
+                    <span class="choosed_rail">A01</span>
+                    <span class="choosed_rail">A01</span>
+                </div>
+                <!-- 调换位置底部 -->
+                <div class="opt_wrap none">
+                    <div class="save_wrap">
+                        <ul class="save_p none"></ul>
+                    </div>
+                </div>
+                <!-- 右侧操作按钮 -->
+                <ul class="setting none">
+                    <span class="triangle"></span>
+                    <li><a class="chooseProduct gezi" ><span class="g_icon g_pro"></span><span>设定商品</span></a></li>
+                    <li class="p_info setGnum" data="1"><span class="g_icon g_whole"></span><span>设定加满</span></li>
+                    <li class="p_info setGnum" data="0"><span class="g_icon g_none"></span><span>设定清空</span></li>
+                    <li class="btn_order"><span class="g_icon g_change"></span><span>调换位置</span></li>
+                    <li class="p_info open_door" onclick="openDoor()"><span class="g_icon g_open"></span><span>开柜门</span></li>
+                    <li class="p_info open_empty"><span class="g_icon g_openNone"></span><span>开空柜门</span></li>
+                </ul>
+            </div>
+        </li>
+        </li>
+    </div>
+    <div id="g0804li">
+        <li class="page swiper-slide g_group" id="g0804">
+            <header class="mui-bar mui-bar-nav">
+                <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left">返回</a>
+                <a class="mui-icon mui-pull-left mui-icon-closeempty cancel_opt none">取消</a>
+                <a class="mui-pull-left mui-btn-link close_btn" href="<%=basePath %>app/common/manage/back">关闭</a>
+                <h1 class="mui-title">格子柜A-8</h1>
+                <a class="mui-pull-right show_opt"><span class="g_icon g_more"></span></a>
+            </header>
+            <div class="mui-content">
+                <input type="hidden"  class="glayer">
+                <div class="p_wrap group1" id="showG">
+                </div>
+                <!-- 已选底部 -->
+                <div class="choosed_wrap none">
+                    <span class="gray">已选格子柜: </span>
+                    <span class="choosed_rail">A01</span>
+                    <span class="choosed_rail">A01</span>
+                </div>
+                <!-- 调换位置底部 -->
+                <div class="opt_wrap none">
+                    <div class="save_wrap">
+                        <ul class="save_p none"></ul>
+                    </div>
+                </div>
+                <!-- 右侧操作按钮 -->
+                <ul class="setting none">
+                    <span class="triangle"></span>
+                    <li><a class="chooseProduct gezi"><span class="g_icon g_pro"></span><span>设定商品</span></a></li>
+                    <li class="p_info setGnum" data="1"><span class="g_icon g_whole"></span><span>设定加满</span></li>
+                    <li class="p_info setGnum" data="0"><span class="g_icon g_none"></span><span>设定清空</span></li>
+                    <li class="btn_order"><span class="g_icon g_change"></span><span>调换位置</span></li>
+                    <li class="p_info open_door" onclick="openDoor()"><span class="g_icon g_open"></span><span>开柜门</span></li>
+                    <li class="p_info open_empty"><span class="g_icon g_openNone"></span><span>开空柜门</span></li>
+                </ul>
+            </div>
+        </li>
+    </div>
+</div>
+<div style="display:none" id="g08Header">
+    <ul class="p_num">
+        <li class="p_label p_all"><span>全选</span><i></i></li>
+        <li class="p_col" ><span>1</span><i></i></li>
+        <li class="p_col" ><span>2</span><i></i></li>
+        <li class="p_col" ><span>3</span><i></i></li>
+        <li class="p_col" ><span>4</span><i></i></li>
+        <li class="p_col" ><span>5</span><i></i></li>
+        <li class="p_col" ><span>6</span><i></i></li>
+        <li class="p_col" ><span>7</span><i></i></li>
+        <li class="p_col" ><span>8</span><i></i></li>
+    </ul>
+</div>
+<div style="display:none" id="g05Header">
+    <ul class="p_num">
+        <li class="p_label p_all" ><span>全选</span><i></i></li>
+        <li class="p_col"><span>1</span><i></i></li>
+        <li class="p_col"><span>2</span><i></i></li>
+        <li class="p_col"><span>3</span><i></i></li>
+        <li class="p_col"><span>4</span><i></i></li>
+        <li class="p_col"><span>5</span><i></i></li>
+    </ul>
+</div>
+<input id="zjSelect" type="hidden">
+</body>
+<script src="./js/require.js" defer async="true" data-main="./js/index"></script>
+<script>
+var params= window.location.search;
+var searchParams = params.substring(1).split(";");
+var basePath = window.appObject.getServerAddress();
+var token = window.appObject.getToken();
+var themeStoreId = searchParams[0];
+var layerIds = searchParams[1];
+var index = searchParams[2];
+if (layerIds != "") {
+    document.getElementById("layerIds").value = layerIds;
+}
+//主机页面调换位置保存
+function saveInfo(){
+	require(['index'],function(main){
+		main.saveInfo();
+	})
+}
+//初始化加载数据
+function init(flag,isFirst){
+	require(['index'],function(main){
+		main.init1(flag,isFirst);
+	})
+}
+//加载格子柜信息
+function getSubData(sid,num,index,flag){
+	require(['index'],function(main){
+		main.getSubData(sid,num,index,flag);
+	})
+}
+//开柜门
+function openDoor(){
+	require(['index'],function(main){
+		main.openDoor();
+	})
+}
+</script>
+</html>

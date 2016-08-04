@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/base_view"/>
+
+    <FrameLayout
+        android:layout_marginBottom="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <ListView
+            android:listSelector="@color/transparent"
+            android:id="@+id/addgroup_listview"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:divider="@null"/>
+
+        <TextView
+            android:id="@+id/addgroup_tv_dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="@mipmap/show_head_toast_bg"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30sp"
+            android:visibility="invisible"/>
+
+        <com.ybg.rp.assistant.side.SideBar
+            android:id="@+id/addgroup_sidebar"
+            android:layout_width="30.0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center"/>
+
+        <ProgressBar
+            android:id="@+id/addgroup_pb_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateDrawable="@drawable/progress_loading"/>
+    </FrameLayout>
+
+
+    <RelativeLayout
+        android:layout_marginTop="3dp"
+        android:id="@+id/addgroup_rl_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+            <ImageView
+                android:padding="@dimen/dp_10"
+                android:id="@+id/addgroup_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_15"
+                android:src="@drawable/add_group_selector"/>
+
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/addgroup_tv_count"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:background="@mipmap/icon_add_news"
+                android:gravity="center"
+                android:text="0"
+                android:layout_marginLeft="@dimen/dp_50"
+                android:textColor="@color/white"/>
+
+        <TextView
+            android:layout_toRightOf="@id/addgroup_icon"
+            android:id="@+id/addgroup_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_40"
+            android:text="总计:"/>
+
+        <TextView
+            android:id="@+id/addgroup_tv_total_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_toRightOf="@id/addgroup_text"
+            android:text="¥ 0"
+            android:textColor="@color/red"
+            android:textSize="18sp"/>
+
+        <Button
+            android:id="@+id/addgroup_btn_finish"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/add_group_btn_selector"
+            android:text="选好了"
+            android:textColor="@color/white"/>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <base href="<%=basePath%>"/>
+    <title>经营报告</title>
+    <link rel="stylesheet" href="./css/plugins/mui.min.css" />
+    <link rel="stylesheet" href="./css/plugins/mui.dtpicker.css" />
+    <link rel="stylesheet" href="./css/plugins/mui.picker.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+<body>
+<!--侧滑容器-->
+<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+    <!--侧滑内容-->
+    <aside class="mui-off-canvas-right">
+        <header class="mui-bar mui-bar-nav">
+            <a id="offCanvasHide" href="#" class="mui-pull-left mui-btn-link">取消</a>
+            <h1 class="mui-title">选择主题店</h1>
+            <a class="mui-pull-right mui-btn-link" id="suerP">确定</a>
+        </header>
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <div class="search_wrap">
+                    <div class="mui-search">
+                        <button class="mui-icon mui-icon-search mui-btn-link" onclick="initThemeInfo()"></button>
+                        <input type="search" class="mui-input-clear" id="keyWord" placeholder="请输入关键字" />
+                    </div>
+                </div>
+                <h3 class="search_title" id="nearTheme_t">当前定位主题店</h3>
+                <ul   id="nearTheme">
+                    <li class="search_list">
+                        <label>
+                            <h4>主题店名称</h4>
+                            <p id="themeAddress">主题店地址</p>
+                            <div class="position">
+                                <p class="mui-checkbox mui-left">
+                                    <input name="position" class="check1"  checked type="checkbox" checked />选择该主题店
+                                </p>
+                                <p class="distance"><i class="mui-icon mui-icon-location"></i><span id="nearJl">1米</span></p>
+                            </div>
+                        </label>
+                    </li>
+                </ul>
+                <h3 class="search_title">附近共找到<span id="totalCount1"></span>家主题店</h3>
+                <ul id="showThemeInfo">
+                </ul>
+            </div>
+        </div>
+    </aside>
+    <!--/侧滑内容-->
+
+    <!-- 主题店模板 -->
+    <div id="themeTemp" style="display:none">
+        <li class="search_list">
+            <label>
+                <h4></h4>
+                <p id="addr"></p>
+                <div class="position">
+                    <p class="mui-checkbox mui-left">
+                        <input name="position" class="check1" type="checkbox" />选择该主题店
+                    </p>
+                    <p class="distance"><i class="mui-icon mui-icon-location"></i><span id="jl"></span></p>
+                </div>
+            </label>
+        </li>
+    </div>
+
+    <!--页面内容-->
+    <div class="mui-inner-wrap">
+        <header class="mui-bar mui-bar-nav">
+            <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+            <h1 class="mui-title">经营报告</h1>
+            <a id="offCanvasBtn" class="mui-pull-right mui-btn-link" href="#">全部主题店</a>
+        </header>
+        <div class="mui-content data_center manage_report">
+            <div id="slider" class="mui-slider mui-fullscreen">
+                <div id="sliderSegmentedControl" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+                    <a class="${type=='0'?'mui-control-item mui-active':'mui-control-item'}" href="javascript:void(0);" id="day"><span>日报</span></a>
+                    <a class="${type=='1'?'mui-control-item mui-active':'mui-control-item'}" href="javascript:void(0);" id="week"><span>周报</span></a>
+                    <a class="${type=='2'?'mui-control-item mui-active':'mui-control-item'}" href="javascript:void(0);" id="month"><span>月报</span></a>
+                </div>
+                <div class="mui-slider-group">
+
+                    <!-- 日报 -->
+                    <div id="dayReport" class="mui-slider-item mui-control-content mui-active" >
+                        <div class="mui-scroll-wrapper" id="pullrefresh">
+                            <div class="mui-scroll">
+                                <p class="date_wrap choose_date" data-options='{"type":"date"}'>
+                                    <input type="text" placeholder="" id="dateResult" value="${time}"/>
+                                    <span class="sprints_icon date_icon"></span>
+                                </p>
+                                <div class="report_wrap">
+                                    <p>${yestName}您的主题店销售金额为${yestMap.totalMoney}元，
+                                        较${yestTempName}${moneyStr}
+                                        <c:if test="${moneyCompare=='-1'}">
+                                            ∞%
+                                        </c:if>
+                                        <c:if test="${moneyCompare!='-1'}">
+                                            <fmt:formatNumber value="${moneyCompare}" type="percent" pattern="0.00%"/>；
+                                        </c:if>
+                                        销售频次${yestMap.totalCount}次，
+                                        较${yestTempName}${countStr}
+                                        <c:if test="${countCompare=='-1'}">
+                                            ∞%。
+                                        </c:if>
+                                        <c:if test="${countCompare!='-1'}">
+                                            <fmt:formatNumber value="${countCompare}" type="percent" pattern="0.00%"/>。
+                                        </c:if>
+                                    </p>
+
+                                    <table class="report_table">
+                                        <thead>
+                                        <tr>
+                                            <th>指标名称</th>
+                                            <th>${yestName}</th>
+                                            <th>${yestTempName}</th>
+                                            <th>较上期</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c:forEach items="${list}" var="it" varStatus="status">
+                                            <tr>
+                                                <td>${it.name}</td>
+                                                <td>${it.yest}</td>
+                                                <td>${it.yestTemp}</td>
+                                                <td class="${it.rise=='上涨'?'orange':'green'}">
+                                                    <c:if test="${it.percent=='-1'}">
+                                                        ∞%
+                                                    </c:if>
+                                                    <c:if test="${it.percent!='-1'}">
+                                                        <fmt:formatNumber value="${it.percent}" type="percent" pattern="0.00%"/>
+                                                    </c:if>
+                                                    <span>${it.rise=='上涨'?'↑':'↓'}</span>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <h5 class="icon_title">客源分布分析</h5>
+                                <ul class="report_pieWrap">
+                                    <li>
+                                        <div class="chart" id="amountPieChart" style="width: 90px; height: 90px"></div>
+                                        <p class="mt10">总成交金额：¥${todayMap.totalMoney}</p>
+                                        <p class="label green">线上购买：¥${todayMap.onlineMoney}</p>
+                                        <p class="label orange">线下购买：¥${todayMap.offlineMoney}</p>
+                                    </li>
+                                    <li>
+                                        <div class="chart" id="numPieChart" style="width: 90px; height: 90px"></div>
+                                        <p class="mt10">总成交频次：${todayMap.totalCount}次</p>
+                                        <p class="label green">线上频次：${todayMap.onlineCount}次</p>
+                                        <p class="label orange">线下频次：${todayMap.offlineCount}次</p>
+                                    </li>
+                                </ul>
+                                <h5 class="icon_title">PPbar商品分析</h5>
+
+                                <div id="content">
+                                    <p class="more" >
+										<span class="rankList" id="sort">按销售金额从高到低
+											<i class="triangle"></i>
+											<i class="triangle"></i>
+										</span>
+                                        <a class="mui-navigate-right showMore" href="javascript:void(0);" id="more1"></a>
+                                    </p>
+                                    <ul class="mui-table-view rank_list" id="rank">
+                                        <c:forEach items="${dataList}" var="it" varStatus="status">
+                                            <c:if test="${status.index<3}">
+                                                <li class="mui-table-view-cell proDetail">
+                                                    <span class="rank_num">${status.index + 1}</span>
+                                                    <span class="rank_img"><img src="img/product/pro-01.png" /></span>
+                                                    <div class="rank_con">
+                                                        <h5>${it.goods_name}</h5>
+                                                        <p><span>${todayName}: <i class="red">¥${it.todayMoney}</i></span><span class="gray">${yestName}: <i>¥${it.oldMoney}</i></span></p>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+
+
+                                    <p class="more" >
+										<span class="rankList" id="sort2">按销售频次从高到低
+											<i class="triangle"></i>
+											<i class="triangle"></i>
+										</span>
+                                        <a class="mui-navigate-right showMore" href="javascript:void(0);" id="more2"></a>
+                                    </p>
+                                    <ul class="mui-table-view rank_list" id="rank2">
+                                        <c:forEach items="${dataList2}" var="it" varStatus="status">
+                                            <c:if test="${status.index<3}">
+                                                <li class="mui-table-view-cell proDetail">
+                                                    <span class="rank_num">${status.index + 1}</span>
+                                                    <span class="rank_img"><img src="img/product/pro-01.png" /></span>
+                                                    <div class="rank_con">
+                                                        <h5>${it.goods_name}</h5>
+                                                        <p><span>${todayName}: <i class="red">${it.todayCount}人次</i></span><span class="gray">${yestName}: <i>${it.oldCount}人次</i></span></p>
+                                                    </div>
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </div>
+
+                                <h6 class="more mt10">
+                                    <span>商品分类排行榜</span>
+                                    <button class="mui-btn active" id="bigAmount">按金额</button>
+                                    <button class="mui-btn" id="bigNum">按频次</button>
+                                    <a class="mui-navigate-right showMore" href="javascript:void(0);" id="more3"></a>
+                                </h6>
+
+                                <table class="report_table">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>分类名称</th>
+                                        <th id="bigType">金额(元)
+													<span class="sortable" id="sort3">
+													<i class="triangle"></i>
+													<i class="triangle"></i>
+													</span>
+                                        </th>
+                                        <th>占比</th>
+                                        <!-- <th>频次(次)<span class="sortable"><i class="triangle"></i><i class="triangle"></i></span></th>
+                                        <th>占比</th> -->
+                                    </tr>
+                                    </thead>
+                                    <tbody id="rank3">
+                                    <c:forEach items="${listmap}" var="it" varStatus="status">
+                                        <c:if test="${status.index<3}">
+                                            <tr>
+                                                <td>
+													<span class="${status.index==0?'rank first':status.index==1?'rank second':'rank'}">
+													${status.index + 1}
+													</span>
+                                                </td>
+                                                <td>${it.category}</td>
+                                                <td>${it.todayMoney}</td>
+                                                <td class="orange">${it.riseMoney}%</td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 周报 -->
+
+
+                    <!-- 月报 -->
+
+
+
+                </div>
+            </div>
+        </div>
+        <nav class="mui-bar mui-bar-tab">
+            <a class="mui-tab-item" href="javascript:void(0);" id="over">实况</a>
+            <a class="mui-tab-item mui-active" href="javascript:void(0);" id="analysis">分析</a>
+        </nav>
+    </div>
+    <!--/页面内容-->
+</div>
+<!--/侧滑容器-->
+<input type="hidden"  value="${currPage}" id="dataCurrPage"/>
+<input type="hidden"  value="${totalPage}" id="dataTotalPage"/>
+<input type="hidden"  value="desc" id="orderBy"/>
+<input type="hidden"  value="desc" id="orderBy2"/>
+<input type="hidden"  value="${type}" id="type"/>
+<input type="hidden"  value="0" id="orderType"/>
+<input type="hidden"  value="desc" id="orderBy3"/>
+<input type="hidden"  value="desc" id="orderBy4"/>
+</body>
+<script type="text/javascript" src="js/plugins/zepto.js"></script>
+<script type="text/javascript" src="js/plugins/mui.min.js"></script>
+<script type="text/javascript" src="js/plugins/echarts-all.js"></script>
+<script src="js/plugins/mui.dtpicker.js"></script>
+<script src="js/plugins/mui.picker.js"></script>
+<script>
+    var basePath = window.appObject.getServerAddress();
+	var token = window.appObject.getToken();
+	var longitude = window.appObject.getLongitude();
+	var latitude = window.appObject.getLatitude();
+	var ids = "";
+	// 侧滑内容显示隐藏
+	var offCanvasWrapper = mui('#offCanvasWrapper');
+	var classList = offCanvasWrapper[0].classList;
+	classList.add('mui-slide-in');
+	document.getElementById('offCanvasBtn').addEventListener('tap', function() {
+		offCanvasWrapper.offCanvas('show');
+	});
+	document.getElementById('offCanvasHide').addEventListener('tap', function() {
+		offCanvasWrapper.offCanvas('close');
+	});
+
+	// 左右滑动切换页面
+	mui.init();
+	(function($) {
+		//阻尼系数
+		var deceleration = mui.os.ios ? 0.003 : 0.0009;
+		$('.mui-scroll-wrapper').scroll({
+			bounce: false,
+			indicators: true,
+			deceleration: deceleration
+		});
+	})(mui);
+
+
+	// 日期选择
+	(function($) {
+		$.init();
+		var result = document.getElementById('dateResult');
+		var btns = $('.choose_date');
+
+		btns.each(function(i, btn) {
+			btn.addEventListener('tap', function() {
+				var optionsJson = this.getAttribute('data-options') || '{}';
+				var options = JSON.parse(optionsJson);
+				var id = this.getAttribute('id');
+				var picker = new $.DtPicker(options);
+				picker.show(function(rs) {
+					result.value = rs.text;
+					picker.dispose();
+					var type = '${type}';
+					subTime(type); // 提交 刷新
+				});
+			}, false);
+		});
+	})(mui);
+
+	/**
+	   *初始化
+	   *如果之前选了售卖机 就要选上
+	   **/
+	   function selectTheme(){
+	      var ids = '${themeIds}';
+	      console.info(ids != null && ids != "");
+	      if(ids != null && ids != ""){
+	         var string = ids.split(",");
+	         $("input[name='position']").each(function(){
+	            for(var i=0;i<string.length;i++){
+	               if(string[i] == $(this).val()){
+	                  this.checked = true;
+	               }
+	            }
+	         });
+	      }
+	   }
+
+	//主题店ids
+	function getThemeIds(){
+		var tids="-1";
+		mui(".check1").each(function(){
+            if(this.checked){
+            	if($(this).val() != 'on'){
+            		tids += "," + $(this).val();
+            	}
+
+            }
+         });
+		return tids;
+	}
+
+	//选择PPbar确认按钮点击事件
+	function surePPbar(){
+		//alert(getThemeIds());
+		var type = $("#type").val();
+		refresh(type);
+
+	}
+	//选择PPbar确认按钮点击事件
+	$("#suerP").on("tap",function(){
+		offCanvasWrapper.offCanvas('close');
+		surePPbar();
+	});
+
+	//实况
+	$("#over").on('tap',function(){
+		var token = "${token}";
+		var themeIds = getThemeIds();
+		window.location.href="statisticsApp/toDataOverview?token=" + token + "&themeIds=" + themeIds;
+	});
+
+	//分析
+	$("#analysis").on('tap',function(){
+		var token = "${token}";
+		var themeIds = getThemeIds();
+		window.location.href="statisticsApp/toManageReport?token=" + token + "&themeIds=" + themeIds;
+	});
+
+	//日报
+	$("#day").on('tap',function(){
+		refresh(0);
+	});
+
+	//周报
+	$("#week").on('tap',function(){
+		refresh(1);
+	});
+
+	//月报
+	$("#month").on('tap',function(){
+		refresh(2);
+	});
+
+	//点击日、周、月重新加载该页面
+	function refresh(type){
+		var time = '';
+		var token = "${token}";
+		var themeIds = getThemeIds();
+		window.location.href="statisticsApp/manageReportByType?token=" + token + "&themeIds=" + themeIds + "&orderBy=desc&time=" + time + "&type=" + type;
+	}
+
+	//点击时间、下拉刷新重新加载该页面
+	function subTime(type){
+		var time = $("#dateResult").val();
+		var token = "${token}";
+		var themeIds = getThemeIds();
+		window.location.href="statisticsApp/manageReportByType?token=" + token + "&themeIds=" + themeIds + "&orderBy=desc&time=" + time + "&type=" + type;
+	}
+
+	//点击更多
+	$("#more1").on('tap',function(){
+		moresub("0","0");
+	});
+
+	$("#more2").on('tap',function(){
+		moresub("0","1");
+	});
+
+	$("#more3").on('tap',function(){
+		var kind = $("#orderType").val();
+		moresub("1",kind);
+	});
+
+	function moresub(goodType,kind){
+		var token = "${token}";
+		var themeIds = getThemeIds();
+		window.location.href="statisticsApp/goodByType?token=" + token + "&themeIds=" + themeIds + "&goodType=" + goodType + "&kind=" + kind;
+	}
+
+	//商品分类--按金额
+	$("#bigAmount").on("tap",function(){
+		$("#orderType").val("0");
+		$("#orderBy3").val("desc");//排序 默认desc
+		$("#bigAmount").attr("class","mui-btn active");
+		$("#bigNum").attr("class","mui-btn");
+		bigsub("0","desc"); // 提交
+	});
+
+	//商品分类--按频次
+	$("#bigNum").on("tap",function(){
+		$("#orderType").val("1");
+		$("#orderBy3").val("desc");//排序 默认desc
+		$("#bigAmount").attr("class","mui-btn");
+		$("#bigNum").attr("class","mui-btn active");
+		bigsub("1","desc");//提交
+	});
+	//排序
+	$("#bigType").on("tap",function(){
+		var orderType = $("#orderType").val();
+		var orderBy = $("#orderBy3").val();
+		if(orderBy=='desc'){
+			orderBy='asc';
+		}else{
+			orderBy='desc';
+		}
+		bigsub(orderType,orderBy); // 提交
+	});
+
+	//商品分类及排序-提交
+	function bigsub(orderType,orderBy){
+		var time = $("#dateResult").val();
+		var type = $("#type").val();
+		var hName = "金额(元)";
+		var hSort = "<span class=\"sortable\" id=\"sort3\"><i class=\"triangle\"></i><i class=\"triangle\"></i></span>";
+		if(orderType=='1'){
+			hName = "频次(次)";
+		}
+
+		//排序
+		if(orderBy=='asc'){
+			hSort = "<span class=\"sortable active\" id=\"sort3\"><i class=\"triangle\"></i><i class=\"triangle\"></i></span>";
+		}
+		$("#orderBy3").val(orderBy);//排序
+		$("#bigType").html(hName+hSort); // 更换排序图标
+
+		var params={};
+		params.token='${token}';
+		params.themeIds="-1,1";
+		params.orderBy=orderBy;
+		params.time=time;
+		params.type=type;
+		$.ajax({
+			url:'statisticsApp/bigByType',
+			data:params,
+			success:function(data){
+				//var data1 = JSON.stringify(data);
+				//alert(data1);
+				var data1 = JSON.parse(data);//eval("(" + data + ")");
+				var dataList = data1.listmap;
+				var h = "";
+				for(var i= 0;i< dataList.length;i++){
+					if(i < 3){//排名3个
+						h += "<tr>";
+						if(i==0){
+							h += "<td><span class=\"rank first\">1</span></td>";
+						}
+						if(i==1){
+							h += "<td><span class=\"rank second\">2</span></td>";
+						}
+						if(i==2){
+							h += "<td><span class=\"rank\">3</span></td>";
+						}
+						h += "<td>"+ dataList[i].category +"</td>";
+
+						if(orderType=='1'){//按频次
+							h += "<td>"+ dataList[i].todayCount +"</td>";
+							h += "<td>"+ dataList[i].riseCount +"%</td>";
+						}else{//按金额
+							h += "<td>"+ dataList[i].todayMoney +"</td>";
+							h += "<td>"+ dataList[i].riseMoney +"%</td>";
+						}
+
+						h += "</tr>";
+					}
+
+				}
+				$("#rank3").html(h); //更换内容
+			}
+		});
+	}
+
+
+	$(document).ready(function(){
+		//点击销售金额排行
+		$("#sort").on('tap',function(){
+			var orderBy = $("#orderBy").val();
+			if(orderBy=='desc'){
+				orderBy='asc';
+			}else{
+				orderBy='desc';
+			}
+			sub(orderBy);//提交
+		});
+
+		//点击销售频次排行
+		$("#sort2").on('tap',function(){
+			var orderBy = $("#orderBy2").val();
+			if(orderBy=='desc'){
+				orderBy='asc';
+			}else{
+				orderBy='desc';
+			}
+			sub2(orderBy);//提交
+		});
+	});
+
+	//提交
+	function sub(orderBy){
+		//alert($("#content").html());
+		var todayName = '${todayName}';
+		var yestName = '${yestName}';
+		var yestTempName = '${yestTempName}';
+		var time = $("#dateResult").val();
+		if(orderBy=='asc'){
+			var h = "按销售金额从低到高";
+				h += "<i class=\"triangle\"></i>";
+				h += "<i class=\"triangle\"></i>";
+			$("#orderBy").val("asc");
+			$("#sort").attr("class","rankList active");
+			$("#sort").html(h);//更换排序图标
+
+		} else{
+			var h = "按销售金额从高到低";
+				h += "<i class=\"triangle\"></i>";
+				h += "<i class=\"triangle\"></i>";
+			$("#orderBy").val("desc");
+			$("#sort").attr("class","rankList");
+			$("#sort").html(h);//更换排序图标
+			//$("#content").find("p").eq(0).html(h);//更换排序图标
+		}
+
+		var params={};
+		params.token='${token}';
+		params.themeIds="-1,1";
+		params.orderBy=orderBy;
+		params.currPage="1";
+		params.time=time;
+		params.type='${type}';
+		$.ajax({
+			url:'statisticsApp/amountSortByType',
+			data:params,
+			success:function(data){
+				//var data1 = JSON.stringify(data);
+				var data1 = JSON.parse(data);//eval("(" + data + ")");
+				var dataList = data1.list;
+				$("#data1CurrPage").val(data1.currPage);
+				$("#data1totalPage").val(data1.totalPage);
+				var h = "";
+				for(var i= 0;i< dataList.length;i++){
+					if(i < 3){
+						h += "<li class=\"mui-table-view-cell proDetail\">";
+						h += "<span class=\"rank_num\">"+ (i+1) +"</span>";
+						h += "<span class=\"rank_img\"><img src=\"img/product/pro-01.png\" /></span>";
+						h += "<div class=\"rank_con\">";
+						h += "	<h5>"+ dataList[i].goods_name +"</h5>";
+						h += "	<p><span>" + todayName + ": <i class=\"red\">¥"+ dataList[i].todayMoney +"</i></span>";
+						h += "		<span class=\"gray\">" + yestName + ": <i>¥"+ dataList[i].oldMoney +"</i></span>";
+						h += "	</p>";
+						h += "</div>";
+						h += "</li>";
+					}
+
+				}
+				$("#content").find("ul").eq(0).html(h);//更换内容
+			}
+		});
+	}
+
+	//提交 频次
+	function sub2(orderBy){
+		//alert($("#content").html());
+		var todayName = '${todayName}';
+		var yestName = '${yestName}';
+		var yestTempName = '${yestTempName}';
+		var time = $("#dateResult").val();
+		if(orderBy=='asc'){
+			var h = "按销售频次从低到高";
+				h += "<i class=\"triangle\"></i>";
+				h += "<i class=\"triangle\"></i>";
+			$("#orderBy2").val("asc");
+			$("#sort2").attr("class","rankList active");
+			$("#sort2").html(h);//更换排序图标
+
+		} else{
+			var h = "按销售频次从高到低";
+				h += "<i class=\"triangle\"></i>";
+				h += "<i class=\"triangle\"></i>";
+			$("#orderBy2").val("desc");
+			$("#sort2").attr("class","rankList");
+			$("#sort2").html(h);//更换排序图标
+			//$("#content").find("p").eq(0).html(h);//更换排序图标
+		}
+
+		var params={};
+		params.token='${token}';
+		params.themeIds="-1,1";
+		params.orderBy=orderBy;
+		params.currPage="1";
+		params.time=time;
+		params.type='${type}';
+		$.ajax({
+			url:'statisticsApp/numSortByType',
+			data:params,
+			success:function(data){
+				//var data1 = JSON.stringify(data);
+				var data1 = JSON.parse(data);//eval("(" + data + ")");
+				var dataList = data1.list;
+				//$("#data1CurrPage").val(data1.currPage);
+				//$("#data1totalPage").val(data1.totalPage);
+				var h = "";
+				for(var i= 0;i< dataList.length;i++){
+					if(i < 3){
+						h += "<li class=\"mui-table-view-cell proDetail\">";
+						h += "<span class=\"rank_num\">"+ (i+1) +"</span>";
+						h += "<span class=\"rank_img\"><img src=\"img/product/pro-01.png\" /></span>";
+						h += "<div class=\"rank_con\">";
+						h += "	<h5>"+ dataList[i].goods_name +"</h5>";
+						h += "	<p><span>" + todayName + ": <i class=\"red\">"+ dataList[i].todayCount +"人次</i></span>";
+						h += "		<span class=\"gray\">" + yestName + ": <i>"+ dataList[i].oldCount +"人次</i></span>";
+						h += "	</p>";
+						h += "</div>";
+						h += "</li>";
+					}
+
+				}
+				$("#rank2").html(h);//更换内容
+			}
+		});
+	}
+
+	//加载主题店
+	function initThemeInfo(){
+		selectTheme();
+		var keyWord = $("#keyWord").val();
+		$("#showThemeInfo").html("");
+		$.ajax({
+			url: basePath + "/themeStoreBaseInfo/listThemeStoreByToken",
+			type:"post",
+			data:{token: token, name: keyWord,latitude: latitude,longitude: longitude},
+			dataType:"json",
+			async:false,
+			success:function(data){
+				if(data.status){
+					var nearList = data.nearestList;
+					var dataList = data.dataList;
+					if(nearList != null){
+						$("#nearTheme").find("h4").html(nearList.name);
+						$("#nearTheme").find("themeAddress").html(nearList.address);
+						$("#nearTheme").find("nearJl").html(nearList.distance);
+						$("#themeTemp").find("input").html(nearList.id);
+					}else{
+						$("#nearTheme").hide();
+						$("#nearTheme_t").hide();
+					}
+					if (dataList != null) {
+                        for(var i=0;i<dataList.length;i++){
+                            var cellValue = dataList[i];
+                            $("#themeTemp").find("h4").html(cellValue.name);
+                            $("#themeTemp").find("#addr").html(cellValue.address);
+                            $("#themeTemp").find("input").val(cellValue.id);
+                            if(nearList != null){
+                                $("#themeTemp").find("#jl").html(cellValue.distance);
+                            }
+                            $("#showThemeInfo").append($("#themeTemp").html());
+                        }
+					}
+					$("#totalCount1").html(data.totalCount);
+				}else{
+					alert(data.message);
+				}
+			}
+		});
+	}
+
+	// 饼状图表
+	// 定义样式
+	var labelTop = {
+		normal: {
+			labelLine: {
+				show: false
+			}
+		}
+	};
+	var labelFromatter = {
+		normal: {
+			label: {
+				formatter: function (params) {
+					return 100 - params.value + '%'
+				},
+				textStyle: {
+					fontSize: 14,
+					color: ['#333333'],
+					baseline: 'top'
+				}
+			}
+		},
+	}
+	var labelBottom = {
+		normal: {
+			color: '#98d901',
+			labelLine: {
+				show: false
+			}
+		},
+		emphasis: {
+			color: 'rgba(0, 0, 0, 0)'
+		}
+	};
+	var radius = [20, 45];
+	// 日金额饼图
+	var amountPieOption = {
+		color: ['#feab40'],
+		series: [{
+			type: 'pie',
+			startAngle: 0,
+			radius: radius,
+			center: ['50%', '50%'],
+			itemStyle: labelFromatter,
+			data: [
+				{value: '${todayMap.onlineMoney}', name: '线上购买', itemStyle: labelBottom},
+				{value: '${todayMap.offlineMoney}', name: '线下购买', itemStyle: labelTop},
+			]
+		}]
+	};
+	var amountPieChart = echarts.init(document.getElementById('amountPieChart'));
+	amountPieChart.setOption(amountPieOption);
+	// 日频次饼图
+	var numPieOption = {
+		color: ['#feab40'],
+		series: [{
+			type: 'pie',
+			startAngle: 0,
+			radius: radius,
+			center: ['50%', '50%'],
+			itemStyle: labelFromatter,
+			data: [
+				{value: '${todayMap.onlineCount}', name: '线上频次', itemStyle: labelBottom},
+				{value: '${todayMap.offlineCount}', name: '线下频次', itemStyle: labelTop},
+			]
+		}]
+	};
+	var numPieChart = echarts.init(document.getElementById('numPieChart'));
+	numPieChart.setOption(numPieOption);
+</script>
+</html>

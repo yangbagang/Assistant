@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>售卖机</title>
+    <link rel="stylesheet" href="./css/plugins/mui.min.css" />
+    <!-- 联动插件 -->
+    <link href="./css/plugins/mui.picker.css" rel="stylesheet" />
+    <link href="./css/plugins/mui.poppicker.css" rel="stylesheet" />
+    <!-- /联动插件 -->
+    <link rel="stylesheet" href="./css/index.css" />
+</head>
+<body>
+<input type="hidden"  value="${size}"id="size">
+<header class="mui-bar mui-bar-nav">
+    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left">取消</a>
+    <a class="mui-pull-left mui-btn-link close_btn" href="goodsAtMachine.html">关闭</a>
+    <h1 class="mui-title">选择商品</h1>
+    <div class="mui-search rightW">
+        <button class="mui-icon mui-icon-search mui-btn-link" onclick="search()"id="search"></button>
+        <input type="search" class="mui-input-clear search_con" id="keyWord" placeholder="请输入关键字" />
+    </div>
+</header>
+<div class="mui-content p_choose none">
+    <div class="p_wrap">
+        <h6 data-group="A" class="data_group">A</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="B" class="data_group">B</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="C" class="data_group">C</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="D" class="data_group">D</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="E" class="data_group">E</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="F" class="data_group">F</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="G" class="data_group">G</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="H" class="data_group">H</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="I" class="data_group">I</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="J" class="data_group">J</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="K" class="data_group">K</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="L" class="data_group">L</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="M" class="data_group">M</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="N" class="data_group">N</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="O" class="data_group">O</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="P" class="data_group">P</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="Q" class="data_group">Q</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="R" class="data_group">R</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="S" class="data_group">S</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="T" class="data_group">T</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="U" class="data_group">U</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="V" class="data_group">V</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="W" class="data_group">W</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="X" class="data_group">X</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="Y" class="data_group">Y</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="Z" class="data_group">Z</h6>
+        <ul class="p_lists">
+        </ul>
+        <h6 data-group="#" class="data_group">#</h6>
+        <ul class="p_lists">
+        </ul>
+    </div>
+    <ul class="indexlist">
+    </ul>
+    <div class="indexlist_alert"></div>
+
+    <div class="result_wrap none">
+        <ul class="p_lists" id="resultShow">
+        </ul>
+    </div>
+</div>
+</div>
+<div style="display:none" id="tihuan0">
+    <li class="p_content" onclick="selectGoods(this)">
+        <div class="p_inner">
+            <p class="gray">休闲零食</p>
+            <p class="red">￥94.0</p>
+        </div>
+    </li>
+</div>
+<input type="hidden" id="counts" value = "0">
+</body>
+<script src="./js/require.js" defer async="true" data-main="./js/main"></script>
+<script>
+    var params = window.location.search;
+    var basePath = window.appObject.getServerAddress();
+    var token = window.appObject.getToken();
+    var searchParams = params.substring(1).split(";");
+    var themeStoreId = searchParams[0];
+    var index = searchParams[2];
+    var layerIds = searchParams[1];
+	/**选择商品**/
+	function selectGoods(obj){
+		require(['main'],function(main){
+			main.selectGoods(obj);
+		})
+	}
+	function search() {
+		require(['main'],function(main){
+			main.getGoodsInfo();
+		})
+    }
+</script>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:background="@drawable/shape_dialog_edit"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginBottom="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_25"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:text="是否确认删除"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/dialog_shangpin_tv_goodsName"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <ImageView
+        android:src="@mipmap/main_bottomline"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50">
+
+        <TextView
+            android:id="@+id/dialog_shangpin_tv_cancel"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="取消"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:background="@color/view_line"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/dialog_shangpin_tv_sure"
+            android:textColor="@color/green"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="确定"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

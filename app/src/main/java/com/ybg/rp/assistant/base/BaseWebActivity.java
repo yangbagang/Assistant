@@ -1,14 +1,25 @@
 package com.ybg.rp.assistant.base;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
+import android.webkit.JsResult;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.ybg.rp.assistant.R;
 import com.ybg.rp.assistant.activity.TbActivity;
+import com.ybg.rp.assistant.activity.login.LoginActivity;
+import com.ybg.rp.assistant.app.VCApplipcation;
+import com.ybg.rp.assistant.js.JavascriptObject;
 import com.ybg.rp.assistant.utils.TbLog;
 
 import java.io.File;
@@ -152,15 +163,101 @@ public class BaseWebActivity extends TbActivity {
         }
     }
 
-    //设置回退
-    //覆盖Activity类的onKeyDown(int keyCoder,KeyEvent event)方法
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK) && wb_webview.canGoBack()) {
-            wb_webview.goBack(); //goBack()表示返回WebView的上一页面
-            return true;
-        }
-        finish();//结束退出程序
-        return false;
+    protected void loadUrl(final double longitude, final double latitude, final String url) {
+        TbLog.i("---BaseWebActivity传给服务的经纬度:", "经度:" + longitude + ",纬度:" + latitude);
+        //加载的网页url
+        VCApplipcation.getInstance().setLongitude(longitude);
+        VCApplipcation.getInstance().setLatitude(latitude);
+        wb_webview.loadUrl(url);
+        wb_webview.setFocusable(true);
+        wb_webview.setFocusableInTouchMode(true);
+        wb_webview.addJavascriptInterface(new JavascriptObject(), "appObject");
+
+        wb_webview.setWebViewClient(new WebViewClient() {
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                System.out.println("url1=" + url);
+                view.loadUrl(url);
+                return true;
+            }
+
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                System.out.println("url2=" + url);
+                pb_progress.setVisibility(View.VISIBLE);
+                //返回结束本页面
+                TbLog.i("---BaseWebActivity:", url);
+                if ("back.html".equals(url)) {
+                    onBackPressed();
+                }
+                if ("close.html".equals(url)) {
+                    finish();
+                }
+
+            }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                pb_progress.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                TbLog.i("--错误码-BaseWebActivity:", errorCode + "");
+                TbLog.i("--错误url-BaseWebActivity:", failingUrl);
+                ll_fail.setVisibility(View.VISIBLE);
+                pb_progress.setVisibility(View.INVISIBLE);
+                wb_webview.setVisibility(View.INVISIBLE);
+                ll_fail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ll_fail.setVisibility(View.INVISIBLE);
+                        loadUrl(longitude, latitude, url);
+                        wb_webview.setVisibility(View.VISIBLE);
+                    }
+                });
+            }
+
+        });
+
+        wb_webview.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+
+            }
+
+            @Override
+            public boolean onJsAlert(WebView view, String url, final String message, final JsResult result) {
+                TbLog.i("---WebMyWealthActivity:", url);
+                TbLog.i("---WebMyWealthActivity:", message);
+
+                //token改变重新登录
+                if (message.contains("账号安全")) {
+                    new AlertDialog.Builder(BaseWebActivity.this)
+                            .setTitle("提示!")
+                            .setMessage(message)
+                            .setPositiveButton("确定",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+
+                                            startActivity(new Intent(BaseWebActivity.this, LoginActivity.class));
+                                            VCApplipcation.getInstance().clearLoginParams();
+                                            finish();
+                                        }
+                                    })
+                            .create()
+                            .show();
+
+                    result.confirm();
+                    return true;
+                }
+                return super.onJsAlert(view, url, message, result);
+            }
+
+        });
     }
 }

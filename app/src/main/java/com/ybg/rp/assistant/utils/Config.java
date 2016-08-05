@@ -15,7 +15,7 @@ package com.ybg.rp.assistant.utils;
 public interface Config {
 
     //String URL_COMM = "http://183.57.41.230/Ph5Platform/";           //正式环境
-    String URL_COMM = "http://192.168.12.101:8080/";
+    String URL_COMM = "http://183.57.41.230/ua/";
     String URL_FID = "http://183.57.41.230/FileServer/";           //上传预览下载头像地址
 
     String PATH = SimpleUtil.getSDCardPath() + "/vendingHead/";  //头像图片sd卡路径
